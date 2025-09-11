@@ -19,3 +19,4 @@ Then :
 <sup> npm install react-leaflet@next </sup>
 
 ### API Nominatim
+
