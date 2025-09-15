@@ -16,7 +16,7 @@ export const SearchProvider = ({ children }) => {
     const updateMap = async (data) => {
         const fastFood = await getFastFood('search?addressdetails=1&q=', data.city);
         setCoords(data.coords);
-        setZoom(17);
+        setZoom(15);
         setMarkers(fastFood.data);
     }
 
