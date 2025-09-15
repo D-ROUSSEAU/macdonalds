@@ -7,11 +7,11 @@ import { useGeolocation } from './hooks/useGeolocation'
 import { SearchContext } from "./context/SearchContext"
 
 function App() {
-  const {locationInfos, locationError} = useGeolocation();
-  const { updateMap } = useContext(SearchContext);
+  const {locationInfos, locationError} = useGeolocation()
+  const { updateMap } = useContext(SearchContext)
 
   useEffect(() => {
-    console.log({ locationError, locationInfos});
+    console.log('User geolocation : ', { locationError, locationInfos})
   }, [])
   
 

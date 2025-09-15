@@ -1,10 +1,10 @@
 function List({data, onUpdate}) {
-
+    console.log('List render')
     const center = (p) => {
-        const coords = [Number(p.lat), Number(p.lon)];
-        const name = data.display_name;
-        const city = data.name;
-        onUpdate({ coords, name, city });
+        const coords = [Number(p.lat), Number(p.lon)]
+        const name = data.display_name
+        const city = data.name
+        onUpdate({ coords, name, city })
     }
 
     return (
@@ -14,4 +14,4 @@ function List({data, onUpdate}) {
     )
 }
 
-export default List;
+export default List

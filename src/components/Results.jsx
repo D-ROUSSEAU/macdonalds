@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { SearchContext } from "../context/SearchContext";
+import { useContext } from "react"
+import { SearchContext } from "../context/SearchContext"
 
 function Results() {
-
+    console.log('Results render')
     const { title, description } = useContext(SearchContext)
 
     return (
@@ -14,4 +14,4 @@ function Results() {
     )
 }
 
-export default Results;
+export default Results

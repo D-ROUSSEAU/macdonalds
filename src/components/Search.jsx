@@ -1,36 +1,36 @@
-import { useContext } from "react";
-import List from "./List";
-import { getCity } from "../services/api";
-import { SearchContext } from "../context/SearchContext";
+import { useContext } from "react"
+import List from "./List"
+import { getCity } from "../services/api"
+import { SearchContext } from "../context/SearchContext"
 
 function Search({update}) {
-
+    console.log('Search render')
     const { search, setSearch, results, setResults, err, setErr } = useContext(SearchContext)
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
         
         if(!search)
-            return;
+            return
 
         try {
-            const query = await getCity('search?q=', search);
+            const query = await getCity('search?q=', search)
 
             if(query.data.length > 0) {
-                setResults(query.data);
-                setErr(null);
+                setResults(query.data)
+                setErr(null)
             } else {
-                setResults([]);
-                setErr(<span>Aucun résultat</span>);
+                setResults([])
+                setErr(<span>Aucun résultat</span>)
             }
         }catch(err){
-            console.log(err);
+            console.log(err)
         }
     }
 
     const resetResults = async (p) => {
-        update(p);
-        setResults([]);
+        update(p)
+        setResults([])
     }
 
     return (
@@ -54,4 +54,4 @@ function Search({update}) {
     )
 }
 
-export default Search;
+export default Search

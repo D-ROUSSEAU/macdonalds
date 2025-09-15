@@ -1,21 +1,21 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useContext } from 'react';
-import { SearchContext } from "../context/SearchContext";
+import { useContext } from 'react'
+import { SearchContext } from "../context/SearchContext"
 
 function Map() {
-
-    const { zoom, coords, markers, updateResults } = useContext(SearchContext);
+    console.log('Map render')
+    const { zoom, coords, markers, updateResults } = useContext(SearchContext)
 
     const sendData= (data) => {
         updateResults(data)
-    };
+    }
 
     return (
         <div id="map">
             <MapContainer key={coords[0]} center={coords} zoom={zoom} scrollWheelZoom={true}>
                 <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    attribution='&copy <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {markers && markers.map(marker => (
@@ -32,4 +32,4 @@ function Map() {
     )
 }
 
-export default Map;
+export default Map
