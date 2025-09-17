@@ -4,7 +4,7 @@ export const useGeolocation = () => {
     const [locationInfos, setLocationInfos] = useState(null)
     const [locationError, setLocationError] = useState(null)
 
-    const {geolocation} = navigator;
+    const {geolocation} = navigator
 
     const successFn = (res) => {
         setLocationInfos(res.coords)
@@ -18,5 +18,5 @@ export const useGeolocation = () => {
         geolocation.getCurrentPosition(successFn, errorFn)
     }
 
-    return { locationError, locationInfos};
+    return { locationError, locationInfos}
 }

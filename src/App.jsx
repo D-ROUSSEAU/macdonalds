@@ -1,14 +1,15 @@
-import { useContext, useEffect } from 'react'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { useEffect } from 'react'
 import './App.css'
 import Map from './components/Map'
 import Results from './components/Results'
 import Search from './components/Search'
 import { useGeolocation } from './hooks/useGeolocation'
-import { SearchContext } from "./context/SearchContext"
+
+const queryClient = new QueryClient()
 
 function App() {
   const {locationInfos, locationError} = useGeolocation()
-  const { updateMap } = useContext(SearchContext)
 
   useEffect(() => {
     console.log('User geolocation : ', { locationError, locationInfos})
@@ -16,11 +17,11 @@ function App() {
   
 
   return (
-    <>
-      <Search update={updateMap} />
+    <QueryClientProvider client={queryClient}>
+      <Search />
       <Map />
       <Results />
-    </>
+    </QueryClientProvider>
   )
 }
 

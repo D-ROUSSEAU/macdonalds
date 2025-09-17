@@ -1,32 +1,44 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import 'leaflet/dist/leaflet.css'
-import { useContext } from 'react'
-import { SearchContext } from "../context/SearchContext"
+import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet"
+import "leaflet/dist/leaflet.css"
+import { useDispatch, useSelector } from "react-redux"
+import { updateResults } from "../searchSlice"
 
 function Map() {
-    console.log('Map render')
-    const { zoom, coords, markers, updateResults } = useContext(SearchContext)
+    const dispatch = useDispatch()
+    const zoom = useSelector(state => state.search.zoom)
+    const coords = useSelector(state => state.search.coords)
+    const markers = useSelector(state => state.search.markers)
 
-    const sendData= (data) => {
-        updateResults(data)
+    const sendData = (data) => {
+        dispatch(updateResults(data))
     }
 
     return (
         <div id="map">
-            <MapContainer key={coords[0]} center={coords} zoom={zoom} scrollWheelZoom={true}>
-                <TileLayer
-                    attribution='&copy <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                {markers && markers.map(marker => (
-                    <Marker key={marker.place_id} position={[marker.lat, marker.lon]}>
-                        <Popup>
-                            <p>{marker.name}</p>
-                            {marker.address.road}, {marker.address.city}, {marker.address.country}
-                            <button onClick={ () => sendData(marker) }>Choisir</button>
-                        </Popup>
-                    </Marker>
-                ))}
+            <MapContainer
+                key={coords[0]}
+                center={coords}
+                zoom={zoom}
+                scrollWheelZoom={true}
+                style={{ height: "100vh", width: "100%" }}
+            >
+            <TileLayer attribution='&copy <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            {markers && markers.map((marker) => (
+                <Marker
+                    key={marker.place_id}
+                    position={[Number(marker.lat), Number(marker.lon)]}
+                >
+                    <Popup>
+                        <p className="title">{marker.name}</p>
+                        <p className="content">
+                            {marker.display_name
+                            ? marker.display_name
+                            : "Adresse non disponible"}
+                        </p>
+                        <button onClick={() => sendData(marker)}>Choisir</button>
+                    </Popup>
+                </Marker>
+            ))}
             </MapContainer>
         </div>
     )

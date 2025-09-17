@@ -1,17 +1,16 @@
-import { useContext } from "react"
-import { SearchContext } from "../context/SearchContext"
+import { useSelector } from "react-redux"
 
 function Results() {
-    console.log('Results render')
-    const { title, description } = useContext(SearchContext)
+  const title = useSelector((state) => state.search.title)
+  const description = useSelector((state) => state.search.description)
 
-    return (
-        <div id="results">
-            <p className="title">{title}</p>
-            <p className="description">{description}</p>
-            {description && <button>Continuer</button>}
-        </div>
-    )
+  return (
+    <div id="results">
+      <p className="title">{title}</p>
+      <p className="description">{description}</p>
+      {description && <button>Continuer</button>}
+    </div>
+  )
 }
 
 export default Results

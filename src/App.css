@@ -23,13 +23,17 @@
 }
 
 .leaflet-popup-content {
-    font-size: 12px !important;
     letter-spacing: 0px !important;
 }
 
-.leaflet-popup-content p {
+.leaflet-popup-content p.title {
+    margin-bottom: 13px !important;
+    font-weight: 600 !important;
+}
+
+.leaflet-popup-content p.content {
     margin-bottom: 12px !important;
-    font-weight: 500;
+    font-weight: 200 !important;
 }
 
 .leaflet-popup-content button {
@@ -51,17 +55,15 @@
 #search {
     position: absolute;
     background-color: #ffffff00;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
     padding: 13px 24px;
-    margin: 12px 12px 12px 58px;
+    margin: 12px;
     border-radius: 6px;
     box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
     right: 0;
     top: 0;
     z-index: 2;
     border: 1px solid #a7a7a7;
-    max-width: 380px;
-    width: 100%;
 }
 
 #search p {
@@ -132,6 +134,12 @@
     border: 1px solid #fff347;
 }
 
+#search form p {
+    text-align: center;
+    margin-top: 18px;
+    margin-bottom: 0;
+}
+
 #results {
     position: absolute;
     background-color: #FFFFFF;
@@ -143,7 +151,6 @@
     bottom: 0;
     z-index: 2;
     border: 1px solid #a7a7a7;
-    max-width: 280px;
 }
 
 #results .title {
@@ -166,4 +173,38 @@
     cursor: pointer;
     font-weight: 500;
     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+/* === Breakpoint tablette / téléphone === */
+@media (max-width: 768px) {
+    .leaflet-control-zoom {
+        display: none;
+    }
+
+    #search {
+        max-width: none;
+        left: 0;
+    }
+
+    #results {
+        max-width: none;
+        right: 0;
+    } 
+}
+
+/* === Breakpoint PC / desktop === */
+@media (min-width: 769px) {
+    .leaflet-control-zoom {
+        display: block;
+    }
+
+    #search {
+        max-width: 380px;
+        width: 100%;
+    }
+
+    #results {
+        max-width: 380px;
+        width: 100%;
+    }
 }
