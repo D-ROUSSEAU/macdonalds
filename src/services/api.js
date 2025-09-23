@@ -15,8 +15,8 @@ export const fetchCity = async (query = "") => {
 
 export const fetchFastFood = async (query = "") => {
     const res = await api.get(
-        `/search?q=fast_food+in+${query}&format=json&limit=40`
-    )
+        `/search?q=restaurant+in+${encodeURIComponent(query)}&format=json&limit=100&addressdetails=1&countrycodes=fr`
+    );
     return res.data
 }
 

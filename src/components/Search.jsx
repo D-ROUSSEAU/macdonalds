@@ -36,7 +36,7 @@ function Search() {
         dispatch(setMarkers(fastFoods))
         dispatch(setResults([]))
         dispatch(setCoords(data.coords))
-        dispatch(setZoom(15))
+        dispatch(setZoom(16))
     }
 
     return (
