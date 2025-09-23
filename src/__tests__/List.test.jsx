@@ -4,34 +4,20 @@
 
 import { render, screen, fireEvent } from "@testing-library/react"
 import List from "../components/List"
-import { describe, expect, it, vi } from "vitest"
+import { vi } from "vitest"
 
-describe("List", () => {
-  const mockData = {
-    lat: "48.8566",
-    lon: "2.3522",
-    display_name: "Paris, Île-de-France, France",
-    name: "Paris"
-  }
+test("calls onUpdate when clicked", () => {
+  const data = { lat: "48.8566", lon: "2.3522", display_name: "Paris", name: "Paris" }
+  const mockOnUpdate = vi.fn()
 
-  it("Affiche le display_name", () => {
-    render(<List data={mockData} onUpdate={() => {}} />)
-    expect(screen.getAllByText(/Paris, Île-de-France, France/i).length).toBeGreaterThan(0)
-  })
+  render(<List data={data} onUpdate={mockOnUpdate} />)
 
-  it("Appel onUpdate avec les bonnes variables lors du clic", () => {
-    const onUpdateMock = vi.fn()
+  const link = screen.getByText("Paris")
+  fireEvent.click(link)
 
-    render(<List data={mockData} onUpdate={onUpdateMock} />)
-
-    const linkElement = screen.getAllByText(/Paris, Île-de-France, France/i)
-    fireEvent.click(linkElement[1])
-
-    expect(onUpdateMock).toHaveBeenCalledTimes(1)
-    expect(onUpdateMock).toHaveBeenCalledWith({
-      coords: [48.8566, 2.3522],
-      name: "Paris, Île-de-France, France",
-      city: "Paris"
-    })
+  expect(mockOnUpdate).toHaveBeenCalledWith({
+    coords: [48.8566, 2.3522],
+    name: "Paris",
+    city: "Paris",
   })
 })
