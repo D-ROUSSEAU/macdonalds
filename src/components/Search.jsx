@@ -39,58 +39,74 @@ function Search() {
     }
 
     const getBoundsFromMarkers = (markers) => {
-        if (!markers || markers.length === 0) return null;
+        if (!markers || markers.length === 0) return null
 
-        let minLat = markers[0].lat;
-        let maxLat = markers[0].lat;
-        let minLon = markers[0].lon;
-        let maxLon = markers[0].lon;
+        let minLat = parseFloat(markers[0].lat)
+        let maxLat = parseFloat(markers[0].lat)
+        let minLon = parseFloat(markers[0].lon)
+        let maxLon = parseFloat(markers[0].lon)
 
         markers.forEach(marker => {
-            const lat = parseFloat(marker.lat);
-            const lon = parseFloat(marker.lon);
-            if (lat < minLat) minLat = lat;
-            if (lat > maxLat) maxLat = lat;
-            if (lon < minLon) minLon = lon;
-            if (lon > maxLon) maxLon = lon;
-        });
+            const lat = parseFloat(marker.lat)
+            const lon = parseFloat(marker.lon)
+            if (lat < minLat) minLat = lat
+            if (lat > maxLat) maxLat = lat
+            if (lon < minLon) minLon = lon
+            if (lon > maxLon) maxLon = lon
+        })
 
-        return { minLat, maxLat, minLon, maxLon };
-    };
+        return { minLat, maxLat, minLon, maxLon }
+    }
 
-    const calculateZoom = (bounds) => {
-        if (!bounds) return 6;
+    const getCenterFromBounds = (bounds) => {
+        if (!bounds) return null
+        const centerLat = (bounds.minLat + bounds.maxLat) / 2
+        const centerLon = (bounds.minLon + bounds.maxLon) / 2
+        return [centerLat, centerLon]
+    }
 
-        const latDiff = bounds.maxLat - bounds.minLat;
-        const lonDiff = bounds.maxLon - bounds.minLon;
+    const calculateZoom = (bounds, mapWidth, mapHeight) => {
+        if (!bounds) return 13
 
-        const maxDiff = Math.max(latDiff, lonDiff);
-        
-        if (maxDiff < 0.01) return 16;
-        if (maxDiff < 0.02) return 15;
-        if (maxDiff < 0.05) return 14;
-        if (maxDiff < 0.1) return 13;
-        if (maxDiff < 0.2) return 12;
-        return 11;
-    };
+        const WORLD_DIM = { width: 256, height: 256 }
+        const ZOOM_MAX = 18
+
+        const latRad = (lat) => {
+            const sin = Math.sin(lat * Math.PI / 180)
+            const radX2 = Math.log((1 + sin) / (1 - sin)) / 2
+            return radX2
+        }
+
+        const latFraction = (latRad(bounds.maxLat) - latRad(bounds.minLat)) / Math.PI
+        let lonDiff = bounds.maxLon - bounds.minLon
+        if (lonDiff < 0) lonDiff += 360
+        const lonFraction = lonDiff / 360
+
+        const latZoom = Math.floor(Math.log(mapHeight / WORLD_DIM.height / latFraction) / Math.LN2)
+        const lonZoom = Math.floor(Math.log(mapWidth / WORLD_DIM.width / lonFraction) / Math.LN2)
+
+        return Math.min(latZoom, lonZoom, ZOOM_MAX)
+    }
 
     const resetResults = async (data, delta = 0.1) => {
         setLoading(true)
 
-        const [lat, lon] = data.coords;
-        const minLat = lat - delta;
-        const maxLat = lat + delta;
-        const minLon = lon - delta;
-        const maxLon = lon + delta;
+        const [lat, lon] = data.coords
+        const minLat = lat - delta
+        const maxLat = lat + delta
+        const minLon = lon - delta
+        const maxLon = lon + delta
         const fastFoods = await fetchFastFood({ query: data.city, viewbox: [minLon, minLat, maxLon, maxLat] })
+        const mapContainer = document.getElementById("map")
+        const mapWidth = mapContainer?.clientWidth || 800
+        const mapHeight = mapContainer?.clientHeight || 600
+        const bounds = getBoundsFromMarkers(fastFoods)
+        const zoom = calculateZoom(bounds, mapWidth, mapHeight)
+        const center = bounds ? getCenterFromBounds(bounds) : data.coords
 
         dispatch(setMarkers(fastFoods))
         dispatch(setResults([]))
-        dispatch(setCoords(data.coords))
-
-        const bounds = getBoundsFromMarkers(fastFoods);
-        const zoom = calculateZoom(bounds);
-
+        dispatch(setCoords(center))
         dispatch(setZoom(zoom))
 
         setLoading(false)
