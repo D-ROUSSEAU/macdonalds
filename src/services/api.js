@@ -6,13 +6,20 @@ const api = axios.create({
     baseURL: nominatimApiUrl,
 })
 
+const cacheSearch = {}
+
 export const fetchCity = async (query = "") => {
+    if (cacheSearch[query]) return cacheSearch[query]
+
     const res = await api.get(
-        `/search?q=${query}&format=json&countrycodes=fr`
+        `/search?q=${query}&format=json&countrycodes=fr&limit=10`
     )
-    return res.data.filter(
+    const filtered = res.data.filter(
         (item) => item.addresstype === "city" || item.addresstype === "town" || item.addresstype === "village"
     )
+
+    cacheSearch[query] = filtered
+    return filtered
 }
 
 export const fetchFastFood = async ({ query = "", viewbox }) => {
