@@ -1,8 +1,9 @@
 import { MapContainer, Marker, TileLayer, Popup, useMap } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { useDispatch, useSelector } from "react-redux"
-import { updateResults } from "../searchSlice"
+import { updateResults, setCoords, setZoom } from "../searchSlice"
 import { useEffect } from "react"
+import { useGeolocation } from "../hooks/useGeolocation"
 
 function ChangeView({ coords, zoom }) {
   const map = useMap()
@@ -39,10 +40,16 @@ function Map() {
     const zoom = useSelector(state => state.search.zoom)
     const coords = useSelector(state => state.search.coords)
     const markers = useSelector(state => state.search.markers)
+    const search = useSelector(state => state.search.search)
+    const { locationInfos } = useGeolocation()
+    const sendData = (data) => { dispatch(updateResults(data)) }
 
-    const sendData = (data) => {
-        dispatch(updateResults(data))
-    }
+    useEffect(() => {
+        if (locationInfos && !markers?.length && search === "") {
+            dispatch(setCoords([locationInfos.latitude, locationInfos.longitude]))
+            dispatch(setZoom(13))
+        }
+    }, [locationInfos, markers, dispatch])
 
     return (
         <div id="map">
