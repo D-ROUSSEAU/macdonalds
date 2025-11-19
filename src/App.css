@@ -46,6 +46,11 @@
     cursor: pointer;
     font-weight: 500;
     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    transition: all 0.1s ease-in-out;
+}
+
+.leaflet-popup-content button:hover {
+    filter: grayscale(.1) contrast(.9);
 }
 
 /*
@@ -68,7 +73,7 @@
 
 #search form div {
     display: flex;
-    gap: 8px;
+    gap: 12px;
 }
 
 #search form div input {
@@ -90,13 +95,17 @@
 #search form div button {
     display: flex;
     align-items: center;
-    padding: 6px 8px;
+    padding: 8px 12px;
     border-radius: 4px;
     border: none;
     background-color: #fff347;
     cursor: pointer;
     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    transition: all 0.1s ease-in-out;
+}
 
+#search form div button:hover {
+    filter: grayscale(.1) contrast(.9);
 }
 
 #search form div button svg {
@@ -123,12 +132,14 @@
     padding: 4px 8px;
     border: 1px solid #a7a7a7;
     cursor: pointer;
+    transition: all 0.1s ease-in-out;
 }
 
 #search form ul li a:hover {
     background-color: #fff347;
     color: #000000;
     border: 1px solid #fff347;
+    box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
 }
 
 #search form p {
@@ -170,6 +181,11 @@
     cursor: pointer;
     font-weight: 500;
     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+    transition: all 0.1s ease-in-out;
+}
+
+#results button:hover {
+    filter: grayscale(.1) contrast(.9);
 }
 
 #results a {
