@@ -1,22 +1,9 @@
-# What does this web application do?
+User :
+    - Rechercher une ville
+    - Sélectionner une ville
+    - Sélectionner un marqueur
 
-This application is an interactive map listing McDonald’s locations within a given radius around a point searched by the user.
+-------------------------------------------------------------------------------------------
 
-## Technology and necessary tools
-
-React.js with :
-
-### Axios
-
-<sup> npm install axios </sup>
-
-### React Leaflet
-
-For dependencies :
-<sup> npm install react@rc react-dom@rc leaflet </sup>
-
-Then :
-<sup> npm install react-leaflet@next </sup>
-
-### API Nominatim
-
+Schéma fonctionnel : https://lucid.app/lucidchart/4241c2f2-4434-4c2e-a012-d1e2aff787c3/edit?invitationId=inv_a2769a94-287f-43b0-8f82-80d69d8c662f&page=0_0#
+Vercel : https://macdonalds-chi.vercel.app/

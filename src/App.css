@@ -54,63 +54,60 @@
 
 #search {
     position: absolute;
-    background-color: #ffffff00;
-    backdrop-filter: blur(8px);
+    background-color: #FFFFFF;
     padding: 13px 24px;
     margin: 12px;
-    border-radius: 6px;
+    border-radius: 12px;
     box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
     right: 0;
     top: 0;
     z-index: 2;
-    border: 1px solid #a7a7a7;
-}
-
-#search p {
-    margin-bottom: 12px;
-    font-weight: 500;
-}
-
-#search span {
-    display: block;
-    margin-top: 12px;
-    font-weight: 500;
+    border: none;
+    height: auto;
 }
 
 #search form div {
     display: flex;
-    align-items: center;
     gap: 8px;
 }
 
 #search form div input {
-    border-radius: 4px;
-    padding: 4px 2px;
-    border: 1px solid #a7a7a7;
+    padding: 4px 8px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #a7a7a7;
     flex-grow: 1;
     margin-top: 0;
     width: 100%;
+    font-size: 13px;
+}
+
+#search form div input:focus-visible {
+    outline: none;
 }
 
 #search form div button {
     display: flex;
     align-items: center;
-    padding: 4px 8px;
+    padding: 6px 8px;
     border-radius: 4px;
     border: none;
     background-color: #fff347;
     cursor: pointer;
     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+
 }
 
 #search form div button svg {
     color: #000000;
+    width: 13px;
+    height: auto;
 }
 
 #search form ul {
     display: block;
     width: 100%;
-    padding: 4px 2px;
     list-style-type: none;
 }
 
@@ -143,29 +140,29 @@
 #results {
     position: absolute;
     background-color: #FFFFFF;
-    padding: 13px 24px;
+    padding: 13px 24px 3px 24px;
     margin: 12px;
-    border-radius: 6px;
+    border-radius: 12px;
     box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
     left: 0;
     bottom: 0;
-    z-index: 2;
-    border: 1px solid #a7a7a7;
+    z-index: 1;
+    border: none;
 }
 
 #results .title {
     font-weight: 500;
-    margin-top: 8px;
+    margin-top: 6px;
+    margin-bottom: 17px;
 }
 
 #results .description {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0px;
-    margin-top: 12px;
 }
 
 #results button {
-    margin-top: 12px;
+    margin: 12px 0;
     padding: 4px 8px;
     border-radius: 4px;
     border: none;
@@ -173,6 +170,41 @@
     cursor: pointer;
     font-weight: 500;
     box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+#results a {
+    position: absolute;
+    border: none;
+    top: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    color: #757575;
+    text-decoration: none;
+    background: transparent;
+    font: 16px / 24px Tahoma, Verdana, sans-serif;
+}
+
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.loader p {
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 100vh;
+    font-size: 2rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
 }
 
 /* === Breakpoint tablette / téléphone === */

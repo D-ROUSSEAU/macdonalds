@@ -1,22 +1,29 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export const useGeolocation = () => {
     const [locationInfos, setLocationInfos] = useState(null)
     const [locationError, setLocationError] = useState(null)
 
-    const {geolocation} = navigator
+    useEffect(() => {
+        if (!("geolocation" in navigator)) {
+            setLocationError("La géolocalisation n'est pas supportée.")
+            return
+        }
 
-    const successFn = (res) => {
-        setLocationInfos(res.coords)
-    }
+        const onSuccess = (pos) => {
+            setLocationInfos(pos.coords);
+        };
 
-    const errorFn = (res) => {
-        setLocationError(res.message)
-    }
+        const onError = (err) => {
+            setLocationError(err.message);
+        };
 
-    if(!locationError && !locationInfos) {
-        geolocation.getCurrentPosition(successFn, errorFn)
-    }
+        navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+            enableHighAccuracy: true,
+            timeout: 8000,
+            maximumAge: 0,
+        });
+    }, [])
 
-    return { locationError, locationInfos}
+    return { locationError, locationInfos }
 }

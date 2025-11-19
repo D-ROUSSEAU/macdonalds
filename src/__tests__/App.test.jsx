@@ -17,7 +17,6 @@ test("renders Search, Map and Results", () => {
     const { container } = renderWithProviders(<App />)
     const map = container.querySelector('#map');
 
-    expect(screen.getByText(/Rechercher un restaurant/i)).toBeInTheDocument()
     expect(screen.getByRole("textbox")).toBeInTheDocument()
     expect(map).toBeInTheDocument()
 })
