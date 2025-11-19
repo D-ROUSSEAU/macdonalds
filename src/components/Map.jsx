@@ -2,35 +2,30 @@ import { MapContainer, Marker, TileLayer, Popup, useMap } from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import { useDispatch, useSelector } from "react-redux"
 import { updateResults, setCoords, setZoom } from "../searchSlice"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { useGeolocation } from "../hooks/useGeolocation"
 
-function ChangeView({ coords, zoom }) {
+const ChangeView = ({ coords, zoom }) => {
   const map = useMap()
 
   useEffect(() => {
-    if (coords) {
-      map.flyTo(coords, zoom, {
-        animate: true,
-        duration: 1.5
-      })
-    }
-  }, [coords, zoom, map])
+    if (!coords) return
+    map.flyTo(coords, zoom, { animate: true, duration: 1 })
+  }, [coords, zoom])
 
   return null
 }
 
-function FitBounds({ markers, selectedCoords }) {
+const FitBounds = ({ markers, lockView }) => {
   const map = useMap()
 
   useEffect(() => {
-    if (markers && markers.length > 0) {
-      if (!selectedCoords) {
-        const bounds = markers.map(marker => [Number(marker.lat), Number(marker.lon)])
-        map.fitBounds(bounds, { padding: [50, 50] })
-      }
-    }
-  }, [markers, selectedCoords, map])
+    if (!markers?.length || lockView) return
+
+    const bounds = markers.map(m => [m.lat, m.lon])
+    map.fitBounds(bounds, { padding: [60, 60] })
+
+  }, [markers, lockView])
 
   return null
 }
@@ -43,13 +38,19 @@ function Map() {
     const search = useSelector(state => state.search.search)
     const { locationInfos } = useGeolocation()
     const sendData = (data) => { dispatch(updateResults(data)) }
+    const memoizedMarkers = useMemo(() => markers || [], [markers])
 
     useEffect(() => {
-        if (locationInfos && !markers?.length && search === "") {
-            dispatch(setCoords([locationInfos.latitude, locationInfos.longitude]))
-            dispatch(setZoom(13))
-        }
-    }, [locationInfos, markers, dispatch])
+      if (!locationInfos) return
+
+      const shouldSetDefaultCenter =
+        !markers?.length && search === ""
+
+      if (shouldSetDefaultCenter) {
+        dispatch(setCoords([locationInfos.latitude, locationInfos.longitude]))
+        dispatch(setZoom(13))
+      }
+    }, [locationInfos])
 
     return (
         <div id="map">
@@ -60,9 +61,9 @@ function Map() {
                 style={{ height: "100vh", width: "100%" }}
             >
                 <ChangeView coords={coords} zoom={zoom} />
-                <FitBounds markers={markers} selectedCoords={coords} />
+                <FitBounds markers={memoizedMarkers} lockView={!!coords} />
                 <TileLayer attribution='&copy <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                {markers && markers.map((marker) => (
+                {memoizedMarkers && memoizedMarkers.map((marker) => (
                     <Marker
                         key={marker.place_id}
                         position={[Number(marker.lat), Number(marker.lon)]}
