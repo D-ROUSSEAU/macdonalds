@@ -200,6 +200,7 @@
     text-decoration: none;
     background: transparent;
     font: 16px / 24px Tahoma, Verdana, sans-serif;
+    cursor: pointer;
 }
 
 .loader {
